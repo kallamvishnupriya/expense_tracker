@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h1>Monthly Report</h1>
+
+<table border="1">
+<tr>
+    <th>Month</th>
+    <th>Total Spending</th>
+</tr>
+
+{% for row in data %}
+<tr>
+    <td>{{ row[0] }}</td>
+    <td>₹{{ row[1] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<canvas id="myChart"></canvas>
+
+<script>
+     const labels = JSON.parse('{{ labels | tojson | safe }}');
+    const values = JSON.parse('{{ values | tojson | safe }}');
+
+    const ctx = document.getElementById("myChart");
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Monthly Spending",
+                data: values
+            }]
+        }
+    });
+</script>
+<script src="{{ url_for('static', filename='chart.js') }}"></script>
+
+<a href="/">Back</a>
+
+</body>
+</html>
